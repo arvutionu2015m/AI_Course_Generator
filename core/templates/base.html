@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Course Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'styles.css' %}" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand text-light" href="/">🧠 AI Kursused</a>
+    <div class="ms-auto">
+      {% if user.is_authenticated %}
+        <span class="text-light me-3">Tere, {{ user.username }}!</span>
+        <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">Logi välja</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm me-2">Logi sisse</a>
+        <a href="{% url 'signup' %}" class="btn btn-outline-success btn-sm">Registreeru</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      <h2>➕ Loo uus AI-kursus</h2>
+      <form method="post" class="mb-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Genereeri kursus</button>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+     {% if suggestion %}
+  <div class="alert alert-info d-flex justify-content-between align-items-center">
+    <div>
+      💡 <strong>AI soovitab järgmise kursusena:</strong><br>
+      <em>{{ suggestion }}</em>
+    </div>
+    <a href="{% url 'create_suggested_course' %}" class="btn btn-success">
+      ✅ Loo see kursus
+    </a>
+  </div>
+{% endif %}
+    </div>
+  </div>
+  <hr>
+  <h3 class="mt-4">📚 Minu kursused</h3>
+  {% if courses %}
+    <div class="row row-cols-1 row-cols-md-2 g-3">
+      {% for course in courses %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ course.topic }}</h5>
+              <p class="card-text text-muted">Loodud: {{ course.created_at|date:"Y-m-d H:i" }}</p>
+              <a href="{% url 'course_detail' course.id %}" class="btn btn-outline-primary">Vaata</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Ühtegi kursust pole veel loodud.</p>
+  {% endif %}
+{% endblock %}

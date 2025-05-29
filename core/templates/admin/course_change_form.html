@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% block object-tools %}
+  {{ block.super }}
+  {% if original %}
+    <li>
+      <a class="btn btn-sm btn-primary" href="{% url 'admin:generate-full-structure' original.id %}"
+         onclick="return confirm('See kustutab kõik olemasolevad moodulid ja genereerib need uuesti AI abil. Jätka?')">
+        🧠 Genereeri kogu struktuur AI-ga
+      </a>
+    </li>
+    <li>
+      <a class="btn btn-sm btn-outline-danger mt-2" href="{% url 'admin:validate-course' original.id %}">
+        🔍 Valideeri kursuse struktuur AI-ga
+      </a>
+    </li>
+  {% endif %}
+{% endblock %}

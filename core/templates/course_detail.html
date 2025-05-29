@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>{{ course.topic }}</h2>
+    <a href="{% url 'regenerate_course' course.id %}" class="btn btn-warning"
+       onclick="return confirm('See kustutab olemasolevad andmed ja genereerib kursuse uuesti AI abil. Jätka?')">
+      🔁 Regenereri AI-ga uuesti
+    </a>
+  </div>
+  <p class="text-muted">Loodud: {{ course.created_at|date:"Y-m-d H:i" }}</p>
+
+  {% for module in modules %}
+    <div class="card mb-4 shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{{ module.title }}</h4>
+      </div>
+      <div class="card-body">
+        {% for chapter in module.chapters.all %}
+          <div class="mb-4">
+            <h5 class="text-dark">{{ chapter.title }}</h5>
+            <p class="text-body">{{ chapter.content|linebreaks }}</p>
+
+            {% if chapter.quizzes.all %}
+              <h6 class="text-primary mt-3">🧠 Viktoriinid</h6>
+              <ul class="list-group mb-3">
+                {% for quiz in chapter.quizzes.all %}
+                  <li class="list-group-item">
+                    <strong>Küsimus:</strong> {{ quiz.question }}<br>
+                    <strong>Vastus:</strong> {{ quiz.answer }}
+                    <br>
+                    <a href="{% url 'answer_quiz' quiz.id %}" class="btn btn-outline-primary btn-sm mt-2">Vasta</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if chapter.assignments.all %}
+              <h6 class="text-success">📚 Ülesanded</h6>
+              <ul class="list-group">
+                {% for task in chapter.assignments.all %}
+                  <li class="list-group-item">{{ task.instruction }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+          <hr>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
